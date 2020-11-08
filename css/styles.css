@@ -1,0 +1,68 @@
+@import url('https://fonts.googleapis.com/css?family=Roboto');
+
+* {
+  box-sizing: border-box;
+  margin:0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Roboto', sans-serif;
+  line-height: 1.4;
+  background: #e6e2e0;
+  font-size: 20px;
+}
+
+#task_manager {
+  margin: 30px;
+  text-align: center;
+}
+
+#task_form, #task_table {
+  margin: 20px;
+}
+
+.container {
+  max-width: 800px;
+  margin: auto;
+  padding: 0 20px;
+}
+
+#btn {
+  display: inline-block;
+  color: #33302d;
+  background: #f6f5f4;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 18px;
+
+}
+
+#btn:hover {
+  background: #c5bdb7;
+
+}
+
+input {
+  margin: 10px;
+  padding: 10px;
+  border: #ddd 1px solid;
+  border-radius: 5px;
+}
+
+#task {
+  width: 35%; 
+}
+
+#all_tasks {
+  width: 100%;
+  text-align: left;
+}
+
+#all_tasks, th, td {
+  border-collapse: collapse;
+  border: 1px solid #33302d;
+  padding: 5px 10px;
+}
