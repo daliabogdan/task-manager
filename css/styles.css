@@ -66,3 +66,7 @@ input {
   border: 1px solid #33302d;
   padding: 5px 10px;
 }
+.delete {
+  color:#79706b;
+  cursor:pointer;
+}

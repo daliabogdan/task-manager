@@ -11,10 +11,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Gestor de tareas goventure</title>
   <link rel="stylesheet" href="css/styles.css">
+  <script type="text/javascript" src="jquery-3.5.1.js"></script>
 </head>
 
 <body>
-
   <header id="task_manager">
     <h1>Goventure task manager</h1>
   </header>
@@ -50,6 +50,7 @@
                     $query = "SELECT id_category FROM task_manager.categories WHERE name = '".$categories[$i]."';";
                     $result = mysqli_query($connection, $query);
                     while($row2 = mysqli_fetch_assoc($result)):
+                      //se introduce en la tabla auxiliar un registro por cada categoría de la tarea
                       $query2 = "INSERT INTO task_manager.new_task VALUES ('".$row['id_task']."', '".$row2['id_category']."');";
                       $result2 = mysqli_query($connection, $query2);
                     endwhile;
@@ -68,7 +69,9 @@
         </tr>
         <tr>
           <?php
+          // búsqueda de las tareas con una sola sentencia sql
           $query = "SELECT 
+                        t.id_task AS id,
                         t.description AS task_description,
                         GROUP_CONCAT(DISTINCT c.name SEPARATOR ' ') AS category_name
                     FROM
@@ -78,25 +81,67 @@
                     WHERE
                         t.id_task = n.id_new_task AND c.id_category = n.id_category
                     GROUP BY
-                        task_description;";
+                        id;";
           $result = mysqli_query($connection, $query);
           $resultCheck = mysqli_num_rows($result);
 
           //control de errores
           if ($resultCheck > 0){
             // imprimir el resultado hasta que no queden filas
-              while($row = mysqli_fetch_assoc($result)):
+              while($row = mysqli_fetch_array($result)) {
+                $id = $row['id'];
+                $task = $row['task_description'];
+                $category = $row['category_name'];
           ?>
-          <td><?php echo $row['task_description']; ?> </td>
-          <td><?php echo $row['category_name']; ?> </td>
-          <td>Borrar</td>
+          <td><?=$task; ?> </td>
+          <td><?=$category?> </td>
+          <td class="delete" data-id='<?=$id;?>'>Borrar</td>
         </tr>
-        <?php endwhile; 
-              } ?>
+        <?php
+              } 
+          } ?>
       </table>
     </div>
   </div>
 
+  <!--Borrado de registros con Ajax-->
+  
+  <script type="text/javascript">
+
+    $(document).ready(function(){
+
+      $('.delete').click(function(){
+        var element = this;
+        var removeid = $(this).data('id');
+       // console.log(element);
+       // console.log(removeid);
+        var confirmmsg = confirm("Seguro que quieres eliminar esta tarea?");
+        if (confirmmsg == true) {
+          // Petición AJAX 
+          $.ajax({
+            url: 'delete.php',
+            type: 'POST',
+            data: { id:removeid },
+            success: function(response){
+            //  console.log(response);
+              if(response == 1){
+              // Borrado del registro de la tabla
+              $(element).closest('tr').fadeOut(800,function(){
+                  $(this).remove();
+              });
+              }else{
+                alert('No se encuentra el ID a borrar.');
+              }
+
+            }
+          });
+        }
+
+      });
+
+    });
+
+  </script>
 
 
 </body>
