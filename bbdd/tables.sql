@@ -33,8 +33,5 @@ CREATE TABLE task_manager.new_task(
 INSERT INTO task_manager.new_task
 VALUES (1, 2), (1, 3), (2, 2), (3, 2), (3, 3);
 
-/*
-#1452 - Cannot add or update a child row: a foreign key constraint fails (`task_manager`.`new_task`, CONSTRAINT `new_task_ibfk_2` FOREIGN KEY (`id_category`) REFERENCES `categories` (`id_category`))
-new_task_ibfk_2
-*/
+
 
